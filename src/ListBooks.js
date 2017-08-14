@@ -6,6 +6,10 @@ class ListBooks extends Component {
 
   render() {
 
+  	const {books} = this.props
+
+  	console.log()
+
     return(
     	<div className="list-books">
     		<div className="list-books-title">
@@ -13,9 +17,12 @@ class ListBooks extends Component {
             </div>
             <div className="list-books-content">
             	<div>
-            		<BookShelf title="Currently Reading"/>
-            		<BookShelf title="Want to Read"/>
-            		<BookShelf title="Read"/>
+            		<BookShelf title="Currently Reading" books={books.filter(
+            			(book) => (book.shelf === "currentlyReading"))}/>
+            		<BookShelf title="Want to Read" books={books.filter(
+            			(book) => (book.shelf === "wantToRead"))}/>
+            		<BookShelf title="Read" books={books.filter(
+            			(book) => (book.shelf === "read"))}/>
             	</div>
             	<div className="open-search">
             		<Link className="close-search" to="/search">Add a book</Link>
