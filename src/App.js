@@ -11,11 +11,16 @@ class BooksApp extends React.Component {
     books: []
   }
 
-  moveBook = (book) => {
+  moveBook = (book, shelf) => {
 
-    this.setState ((state) => ({
-      books: state.books.filter((b)=> b.id !== book.id)
-    }))
+    let moved_book = book;
+    moved_book.shelf = shelf;
+
+    this.setState ((state) => (
+      {books: state.books.filter((b)=> b.id !== book.id)}))
+
+    this.setState((state) => (
+      {books: state.books.concat([moved_book])}))
 
   }
 
