@@ -6,9 +6,7 @@ class ListBooks extends Component {
 
   render() {
 
-  	const {books} = this.props
-
-  	console.log()
+  	const {books, onMoveBook} = this.props
 
     return(
     	<div className="list-books">
@@ -18,11 +16,14 @@ class ListBooks extends Component {
             <div className="list-books-content">
             	<div>
             		<BookShelf title="Currently Reading" books={books.filter(
-            			(book) => (book.shelf === "currentlyReading"))}/>
+            			(book) => (book.shelf === "currentlyReading"))}
+            		onMoveBook={onMoveBook}/>
             		<BookShelf title="Want to Read" books={books.filter(
-            			(book) => (book.shelf === "wantToRead"))}/>
+            			(book) => (book.shelf === "wantToRead"))}
+            		onMoveBook={onMoveBook}/>
             		<BookShelf title="Read" books={books.filter(
-            			(book) => (book.shelf === "read"))}/>
+            			(book) => (book.shelf === "read"))}
+            		onMoveBook={onMoveBook}/>
             	</div>
             	<div className="open-search">
             		<Link className="close-search" to="/search">Add a book</Link>

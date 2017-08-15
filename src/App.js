@@ -11,6 +11,14 @@ class BooksApp extends React.Component {
     books: []
   }
 
+  moveBook = (book) => {
+
+    this.setState ((state) => ({
+      books: state.books.filter((b)=> b.id !== book.id)
+    }))
+
+  }
+
   componentDidMount() {
     BooksAPI.getAll().then(books => {
       this.setState({books})
@@ -22,7 +30,7 @@ class BooksApp extends React.Component {
       <div className="app">
 
         <Route exact path="/" render={() => (
-          <ListBooks books={this.state.books}/>
+          <ListBooks books={this.state.books} onMoveBook={this.moveBook}/>
         )}/>
 
         <Route path="/search" render={() => (
