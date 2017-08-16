@@ -9,14 +9,19 @@ class SearchPage extends Component {
     showingBooks: []
   }
 
+  mergeBooks = (mBooks, sBooks) => {
+    let matches = mBooks.map(book => sBooks.filter(b => b.id === book.id)).filter(c => c.length>0)
+  }
+
   updateShowingBooks = (query) => {
     if (query) {
-      BooksAPI.search(query).then((sb)=>(
-        this.setState(()=>({showingBooks:sb}))
-        )
+      BooksAPI.search(query).then(searchBooks => {
+        this.mergeBooks(this.props.books, searchBooks)
+        this.setState(()=>({showingBooks: searchBooks}))
+        }
       )
     } else {
-      this.setState(()=>({showingBooks:[]}))
+      this.setState(()=>({showingBooks: []}))
     }
   }
 
