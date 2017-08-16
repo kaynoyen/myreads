@@ -12,7 +12,8 @@ class SearchPage extends Component {
     }
 
   state = {
-    showingBooks: []
+    query: '',
+    searchBooks: []
   }
 
   mergeBooks = (mBooks, sBooks) => {
@@ -32,20 +33,29 @@ class SearchPage extends Component {
     return mergedBooks
   }
 
-  updateShowingBooks = (query) => {
+  updateBooks = (query) => {
     if (query) {
+
+      this.setState({query: query.trim()})
+
       BooksAPI.search(query).then(searchBooks => {
-        this.setState(()=>({showingBooks: this.mergeBooks(this.props.books, searchBooks)}))
-        }
-      )
-    } else {
-      this.setState(()=>({showingBooks: []}))
-    }
+        this.setState({ searchBooks: searchBooks})
+        })} else {
+        this.setState({ searchBooks: [],
+                        query: ''})
+      }
   }
+
 
 render() {
 
-  const {showingBooks} = this.state
+  let showingBooks
+
+  if (this.state.query && this.state.searchBooks.length > 0) {
+    showingBooks = this.mergeBooks(this.props.books, this.state.searchBooks)
+    } else {
+      showingBooks = []
+  }
 
 	return(
 
@@ -54,17 +64,20 @@ render() {
        			<Link className="close-search" to="/">Close</Link>
               <div className="search-books-input-wrapper">
                 <input 
-                type="text" 
+                type="text"
+                value={this.state.query}
                 placeholder="Search by title or author"
-                onChange={(e)=>this.updateShowingBooks(e.target.value)}
+                onChange={(event) => this.updateBooks(event.target.value)}
                 /> 
               </div>
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-                {showingBooks.map((book)=>(
+
+                {showingBooks.map(book => (
                   <li key={book.id}><Book data={book} onMoveBook={this.props.addBook}/></li>
                   ))}
+              
               </ol>
             </div>
           </div>
