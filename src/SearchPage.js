@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
+import Book from './Book'
 
 class SearchPage extends Component {
 
@@ -7,11 +9,24 @@ class SearchPage extends Component {
     showingBooks: []
   }
 
-  updateShowingBooks = (value) => {
-    console.log(value)
+  updateShowingBooks = (query) => {
+    if (query) {
+      BooksAPI.search(query).then((sb)=>(
+        this.setState(()=>({showingBooks:sb}))
+        )
+      )
+    } else {
+      this.setState(()=>({showingBooks:[]}))
+    }
+  }
+
+  moveBookDummy = () => {
+
   }
 
 render() {
+
+  const {showingBooks} = this.state
 
 	return(
 
@@ -27,7 +42,11 @@ render() {
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">
+                {showingBooks.map((book)=>(
+                  <li key={book.id}><Book data={book} onMoveBook={this.moveBookDummy}/></li>
+                  ))}
+              </ol>
             </div>
           </div>
 
