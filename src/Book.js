@@ -21,7 +21,11 @@ class Book extends Component {
                 </div>
               </div>
               <div className="book-title">{data.title}</div>
-              <div className="book-authors">{data.authors.join(', ')}</div>
+              {console.log(data.authors)}
+              <div className="book-authors">{
+                (typeof data.authors !== 'undefined') && data.authors.join(', ')
+                 
+               }</div>
             </div>
 		)
 	}
