@@ -10,23 +10,31 @@ class SearchPage extends Component {
   }
 
   mergeBooks = (mBooks, sBooks) => {
-    let matches = mBooks.map(book => sBooks.filter(b => b.id === book.id)).filter(c => c.length>0)
+
+    let mergedBooks = sBooks.map(sBook => {
+
+      let shelf = 'none'
+      for (let i=0; i<mBooks.length; i++) {
+        if (mBooks[i].id === sBook.id) {
+          shelf = mBooks[i].shelf
+          break
+        }
+      }
+      sBook.shelf = shelf
+      return sBook
+    })
+    return mergedBooks
   }
 
   updateShowingBooks = (query) => {
     if (query) {
       BooksAPI.search(query).then(searchBooks => {
-        this.mergeBooks(this.props.books, searchBooks)
-        this.setState(()=>({showingBooks: searchBooks}))
+        this.setState(()=>({showingBooks: this.mergeBooks(this.props.books, searchBooks)}))
         }
       )
     } else {
       this.setState(()=>({showingBooks: []}))
     }
-  }
-
-  moveBookDummy = () => {
-
   }
 
 render() {
@@ -49,7 +57,7 @@ render() {
             <div className="search-books-results">
               <ol className="books-grid">
                 {showingBooks.map((book)=>(
-                  <li key={book.id}><Book data={book} onMoveBook={this.moveBookDummy}/></li>
+                  <li key={book.id}><Book data={book} onMoveBook={this.props.addBook}/></li>
                   ))}
               </ol>
             </div>
